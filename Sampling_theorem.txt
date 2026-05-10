@@ -1,0 +1,49 @@
+clc;
+clear;
+close all;
+
+% Parameters
+fm = 50;              % Message signal frequency
+t = 0:0.0001:0.1;     % Continuous time axis
+
+% Original Signal
+x = sin(2*pi*fm*t);
+
+% Under Sampling (fs < 2fm)
+fs1 = 60;                     % Sampling frequency less than Nyquist
+ts1 = 1/fs1;
+n1 = 0:ts1:0.1;
+x1 = sin(2*pi*fm*n1);
+
+% Proper Sampling (fs > 2fm)
+fs2 = 300;                    % Sampling frequency greater than Nyquist
+ts2 = 1/fs2;
+n2 = 0:ts2:0.1;
+x2 = sin(2*pi*fm*n2);
+
+% Plotting
+figure;
+
+% Original Signal
+subplot(3,1,1);
+plot(t, x, 'LineWidth', 1.5);
+title('Original Signal');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
+
+% Under Sampling
+subplot(3,1,2);
+stem(n1, x1, 'filled');
+title('Under Sampling (fs < 2fm) - Aliasing');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
+
+% Proper Sampling
+subplot(3,1,3);
+stem(n2, x2, 'filled');
+title('Proper Sampling (fs > 2fm)');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;

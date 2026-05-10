@@ -1,0 +1,51 @@
+clc;
+clear;
+close all;
+
+% Parameters
+fs = 1000;                 % Sampling frequency
+t = 0:1/fs:1;             % Time vector
+f = 10;                   % Signal frequency
+
+% Original signal
+signal = sin(2*pi*f*t);
+
+% Generate white Gaussian noise
+noise = 0.5*randn(size(t));
+
+% Noisy signal
+noisy_signal = signal + noise;
+
+% Signal Power
+Ps = mean(signal.^2);
+
+% Noise Power
+Pn = mean(noise.^2);
+
+% Signal to Noise Ratio
+SNR = 10*log10(Ps/Pn);
+
+% Assume input and output SNR for Noise Figure
+SNR_in = 30;
+SNR_out = SNR;
+Noise_Figure = SNR_in - SNR_out;
+
+% Display Results
+fprintf('Signal Power = %f\n', Ps);
+fprintf('Noise Power = %f\n', Pn);
+fprintf('SNR = %f dB\n', SNR);
+fprintf('Noise Figure = %f dB\n', Noise_Figure);
+
+% Plot
+figure;
+subplot(3,1,1);
+plot(t, signal);
+title('Original Signal');
+
+subplot(3,1,2);
+plot(t, noise);
+title('White Noise');
+
+subplot(3,1,3);
+plot(t, noisy_signal);
+title('Noisy Signal');

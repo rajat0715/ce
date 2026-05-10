@@ -1,0 +1,55 @@
+clc;
+clear all;
+close all;
+
+% Time axis
+t = 0:0.0001:0.01;
+
+% Original signal
+x = sin(2*pi*200*t);
+
+% Mu-law parameter
+mu = 255;
+
+% Compression using mu-law
+compressed = sign(x).*log(1 + mu*abs(x))/log(1 + mu);
+
+% Quantization
+L = 16; % Number of quantization levels
+
+q_signal = round(((compressed + 1)/2)*(L-1));
+q_signal = (q_signal/(L-1))*2 - 1;
+
+% Expansion (Recovery)
+expanded = sign(q_signal).*((1/mu)*((1+mu).^abs(q_signal)-1));
+
+% Plotting
+figure;
+
+subplot(4,1,1);
+plot(t,x,'LineWidth',1.5);
+title('Original Signal');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
+
+subplot(4,1,2);
+plot(t,compressed,'LineWidth',1.5);
+title('Compressed Signal (\mu-law)');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
+
+subplot(4,1,3);
+stairs(t,q_signal,'LineWidth',1.5);
+title('Quantized Signal');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
+
+subplot(4,1,4);
+plot(t,expanded,'LineWidth',1.5);
+title('Expanded (Recovered) Signal');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
